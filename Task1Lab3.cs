@@ -23,7 +23,7 @@ public class Task1Lab3 : MonoBehaviour
     public float numOfWeeks = 16;
     
     //Add all the percentage calculations into a final difficulty percentage, then use this to multiply the challengeScoreBeforeConversion to get challenge score
-    private float difficultymultiplier;
+    private float difficultyMultiplier;
 
     //number of x that can be inputted by user, these are the total of X in the entirety of the semester, there is no hard limit
     public int numModules;
@@ -47,29 +47,36 @@ public class Task1Lab3 : MonoBehaviour
         if(instructorTaughtBefore == true)
         {
             //The difficulty will be lower since the instructor has taught before
-            difficultymultiplier -= 0.1f;
+            difficultyMultiplier -= 0.1f;
         }
         else
         {
-            difficultymultiplier += 0.1f;
+            difficultyMultiplier += 0.1f;
         }
 
         //If difficultymultiplier is above 1 because of maybe insane amounts inputted, then clamps challengeScore to 10
-        if(difficultymultiplier > 1)
+        if(difficultyMultiplier > 1)
         {
-            difficultymultiplier = 1;
+            difficultyMultiplier = 1;
         } 
+        else if(difficultyMultiplier < 0.1f)
+        {
+            //If the difficultyMultiplier is below 0.1, makes it 0.1 to ensure the lowest challenge score stays at 1 since 10 * 0.1 = 1
+            difficultyMultiplier = 0.1f;
+        }
 
-        Debug.Log("The difficulty multiplier is: " + difficultymultiplier);
+        Debug.Log("The difficulty multiplier is: " + difficultyMultiplier);
 
-        challengeScore = challengeScore * difficultymultiplier;
+        // multiplies challengeScore (10) with difficultyMultiplier and yields a number between 1-10
+        challengeScore = challengeScore * difficultyMultiplier;
         Debug.Log("For " + courseName + ". The challenge score is: " + challengeScore); 
     }
 
     void calculateDat(int numX, float xFactor)
     {
+        //Divides number of X by number of weeks, it is implicitly converted to float, then multiplies by X's factor percentage. Adds to difficulty multiplier.
             holder = (numX / numOfWeeks) * xFactor;
             Debug.Log("Percentage is " + holder);
-            difficultymultiplier += holder;
+            difficultyMultiplier += holder;
     }
 }
